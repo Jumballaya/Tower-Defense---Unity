@@ -1107,9 +1107,53 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: level
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
       propertyPath: weapon
       value: 
       objectReference: {fileID: 9069773475696277328, guid: 7bd65a138bcecc840b10e0e6aab24a71, type: 3}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: baseDPS
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: baseArmor
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: baseHealth
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: upgradeLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: pieces.Array.data[1].dpsIncrease
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: pieces.Array.data[2].dpsIncrease
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: pieces.Array.data[1].armorIncrease
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: pieces.Array.data[2].armorIncrease
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: pieces.Array.data[1].healthIncrease
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: pieces.Array.data[2].healthIncrease
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 7529458170984353004, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
       propertyPath: m_Name
       value: Tower

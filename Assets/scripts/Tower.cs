@@ -3,72 +3,67 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
-//
-//  @TODO: Move this into its own script that exists on the tower prefab
-//
-//
-//  Idea is to use coroutines to increase the 't' value in the shader
-//
-//  Creation:
-//      1. Get a list of objects to fade in (@TODO: figure out where to cache this for easy ref, TowerPart?)
-//      2. Go through the list and set the material to the dissolve material
-//      3. Run coroutine to drive 't' from 0 -> 1
-//      4. Go through the list and set the material back to normal
-//
-//
-//  Deletion:
-//      1. Get that same list from step 1 of creation
-//      2. Go through the list and set the material to the dissolve material
-//      3. Run coroutine to drive 't' from 1 -> 0
-//      4. Go through the list and destroy the objects
-//
-
 
 [Serializable]
 public struct TowerPiece
 {
+    public float dpsIncrease;
+    public float healthIncrease;
+    public float armorIncrease;
     public List<TowerPart> layers;
 }
 
 public class Tower : MonoBehaviour
 {
-    public Transform buildSpot;
+    [Header("Attributes")]
+    public float baseDPS;
+    private float currentDPS;
+    public float baseHealth;
+    private float currentHealth;
+    public float baseArmor;
+    private float currentArmor;
+    [Range(0, 3)]
+    public int upgradeLevel;
     public GameObject weapon;
     private GameObject weaponInstance;
-    public Material dissolveMaterial;
-
-    [Range(0, 3)]
-    public int level;
+    [Header("Internals")]
+    public Transform buildSpot;
+    public Dissolver dissolver;
 
     public List<TowerPiece> pieces = new();
 
-    public float upgradeDebounceTime = 1f;
+    public float upgradeDebounceTime = 0.5f;
     private float upgradeTimer = 0f;
+
 
     public void IncLevel()
     {
-        if (upgradeTimer < upgradeDebounceTime)
+        if (upgradeTimer < (upgradeDebounceTime * 2f))
         {
             return;
         }
-        level += 1;
-        level %= pieces.Count;
+        upgradeLevel += 1;
+        if (upgradeLevel > pieces.Count - 1)
+        {
+            upgradeLevel = pieces.Count - 1;
+            return;
+        }
         StartCoroutine(DissolveTowerAndRebuild());
     }
 
     public void DecLevel()
     {
-        if (upgradeTimer < upgradeDebounceTime)
+        if (upgradeTimer < (upgradeDebounceTime * 2f))
         {
             return;
         }
-        if (level == 0)
+        if (upgradeLevel == 0)
         {
-            level = pieces.Count - 1;
+            return;
         }
         else
         {
-            level -= 1;
+            upgradeLevel -= 1;
         }
         StartCoroutine(DissolveTowerAndRebuild());
     }
@@ -80,6 +75,9 @@ public class Tower : MonoBehaviour
 
     void Start()
     {
+        currentDPS = baseDPS;
+        currentArmor = baseArmor;
+        currentHealth = baseHealth;
         StartCoroutine(BuildTower());
     }
 
@@ -88,10 +86,9 @@ public class Tower : MonoBehaviour
         // Get a list of items to delete
         List<GameObject> objects = new();
         Transform spot = buildSpot;
-        Material mat = null;
-        for (int i = 0; i < pieces[level].layers.Count; i++)
+        for (int i = 0; i < pieces[upgradeLevel].layers.Count; i++)
         {
-            var child = Instantiate(pieces[level].layers[i], buildSpot);
+            var child = Instantiate(pieces[upgradeLevel].layers[i], buildSpot);
             child.transform.position += spot.transform.position;
             spot = child.buildSpot;
             objects.Add(child.gameObject);
@@ -104,27 +101,10 @@ public class Tower : MonoBehaviour
             objects.Add(weaponInstance.transform.GetChild(0).gameObject);
         }
 
-        // Set their material to the dissolve material
-        foreach (GameObject obj in objects)
-        {
-            if (mat == null)
-            {
-                mat = obj.GetComponent<Renderer>().material;
-            }
-            obj.GetComponent<Renderer>().material = dissolveMaterial;
-        }
-
         // Run the dissolve 
-        yield return StartCoroutine(Dissolve(1, 0));
-
-        // Switch the material back
-        foreach (GameObject obj in objects)
-        {
-            obj.GetComponent<Renderer>().material = mat;
-        }
+        yield return StartCoroutine(dissolver.Dissolve(1, 0, upgradeDebounceTime, objects));
     }
 
-    // @TODO: Figure out how to get a different 't' for each object.
     private IEnumerator DissolveTower()
     {
         // Get a list of items to delete
@@ -139,14 +119,8 @@ public class Tower : MonoBehaviour
             objectsToDelete.Add(child.gameObject);
         }
 
-        // Set their material to the dissolve material
-        foreach (GameObject obj in objectsToDelete)
-        {
-            obj.GetComponent<Renderer>().material = dissolveMaterial;
-        }
-
         // Run the dissolve 
-        yield return StartCoroutine(Dissolve(0, 1));
+        yield return StartCoroutine(dissolver.Dissolve(0, 1, upgradeDebounceTime, objectsToDelete));
 
         // Delete the items
         foreach (GameObject obj in objectsToDelete)
@@ -162,17 +136,4 @@ public class Tower : MonoBehaviour
         yield return StartCoroutine(BuildTower());
     }
 
-    private IEnumerator Dissolve(int start, int end)
-    {
-        float elapse = 0f;
-        float str;
-        float duration = upgradeDebounceTime / 2f;
-        while (elapse < duration)
-        {
-            elapse += Time.deltaTime;
-            str = Mathf.Lerp(start, end, elapse / duration);
-            dissolveMaterial.SetFloat("_t", str);
-            yield return null;
-        }
-    }
 }
