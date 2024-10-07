@@ -36,35 +36,32 @@ public class Tower : MonoBehaviour
     public GameObject weapon;
     private GameObject weaponInstance;
     public Material dissolveMaterial;
-    private Transform nextBuildSpot;
 
     [Range(0, 3)]
     public int level;
 
     public List<TowerPiece> pieces = new();
 
+    public float upgradeDebounceTime = 1f;
     private float upgradeTimer = 0f;
 
     public void IncLevel()
     {
-        if (upgradeTimer < 2f)
+        if (upgradeTimer < upgradeDebounceTime)
         {
             return;
         }
-        upgradeTimer = 0f;
         level += 1;
         level %= pieces.Count;
-        RemoveChildren();
-        BuildTower();
+        StartCoroutine(DissolveTowerAndRebuild());
     }
 
     public void DecLevel()
     {
-        if (upgradeTimer < 2f)
+        if (upgradeTimer < upgradeDebounceTime)
         {
             return;
         }
-        upgradeTimer = 0f;
         if (level == 0)
         {
             level = pieces.Count - 1;
@@ -83,56 +80,47 @@ public class Tower : MonoBehaviour
 
     void Start()
     {
-        BuildTower();
-        nextBuildSpot = buildSpot;
+        StartCoroutine(BuildTower());
     }
 
-    private void BuildTower()
+    private IEnumerator BuildTower()
     {
-        BuildPiece(level);
-        BuildWeapon();
-    }
-
-    private void BuildPiece(int idx)
-    {
-        if (idx < 0 || idx >= pieces.Count)
-        {
-            return;
-        }
+        // Get a list of items to delete
+        List<GameObject> objects = new();
         Transform spot = buildSpot;
-        for (int i = 0; i < pieces[idx].layers.Count; i++)
+        Material mat = null;
+        for (int i = 0; i < pieces[level].layers.Count; i++)
         {
-            var child = Instantiate(pieces[idx].layers[i], buildSpot);
+            var child = Instantiate(pieces[level].layers[i], buildSpot);
             child.transform.position += spot.transform.position;
             spot = child.buildSpot;
+            objects.Add(child.gameObject);
         }
-        nextBuildSpot = spot;
-    }
-
-    private void BuildWeapon()
-    {
-        if (weapon != null)
+        if (weapon)
         {
             weaponInstance = Instantiate(weapon, buildSpot);
-            weaponInstance.transform.position = nextBuildSpot.position;
+            weaponInstance.transform.position = spot.position;
+            objects.Add(weaponInstance);
+            objects.Add(weaponInstance.transform.GetChild(0).gameObject);
         }
-    }
 
-    private void RemoveChildren()
-    {
-        List<GameObject> objectsToDelete = new();
-        if (weaponInstance)
+        // Set their material to the dissolve material
+        foreach (GameObject obj in objects)
         {
-            objectsToDelete.Add(weaponInstance);
-            objectsToDelete.Add(weaponInstance.transform.GetChild(0).gameObject);
+            if (mat == null)
+            {
+                mat = obj.GetComponent<Renderer>().material;
+            }
+            obj.GetComponent<Renderer>().material = dissolveMaterial;
         }
-        foreach (Transform child in buildSpot.transform)
+
+        // Run the dissolve 
+        yield return StartCoroutine(Dissolve(1, 0));
+
+        // Switch the material back
+        foreach (GameObject obj in objects)
         {
-            objectsToDelete.Add(child.gameObject);
-        }
-        foreach (GameObject obj in objectsToDelete)
-        {
-            Destroy(obj);
+            obj.GetComponent<Renderer>().material = mat;
         }
     }
 
@@ -158,7 +146,7 @@ public class Tower : MonoBehaviour
         }
 
         // Run the dissolve 
-        yield return StartCoroutine(Dissolve());
+        yield return StartCoroutine(Dissolve(0, 1));
 
         // Delete the items
         foreach (GameObject obj in objectsToDelete)
@@ -169,19 +157,20 @@ public class Tower : MonoBehaviour
 
     private IEnumerator DissolveTowerAndRebuild()
     {
+        upgradeTimer = 0f;
         yield return StartCoroutine(DissolveTower());
-        BuildTower();
+        yield return StartCoroutine(BuildTower());
     }
 
-    private IEnumerator Dissolve()
+    private IEnumerator Dissolve(int start, int end)
     {
         float elapse = 0f;
         float str;
-        float duration = 2f;
+        float duration = upgradeDebounceTime / 2f;
         while (elapse < duration)
         {
             elapse += Time.deltaTime;
-            str = Mathf.Lerp(0, 1, elapse / duration);
+            str = Mathf.Lerp(start, end, elapse / duration);
             dissolveMaterial.SetFloat("_t", str);
             yield return null;
         }
