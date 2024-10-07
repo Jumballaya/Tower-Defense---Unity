@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7529458170984353003}
   - component: {fileID: 7710638678091361656}
   m_Layer: 0
-  m_Name: BasicTower
+  m_Name: DefensiveTowerBasic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,10 +80,10 @@ MonoBehaviour:
   baseDPS: 0
   baseHealth: 0
   baseArmor: 0
-  weapon: {fileID: 919132149155446097, guid: a1d5c978ffcd825409d564f4997724ed, type: 3}
+  upgradeLevel: 0
+  weapon: {fileID: 9069773475696277328, guid: 7bd65a138bcecc840b10e0e6aab24a71, type: 3}
   buildSpot: {fileID: 7529458169839677064}
   dissolver: {fileID: 7710638678091361656}
-  level: 0
   pieces:
   - dpsIncrease: 0
     healthIncrease: 0
