@@ -3,6 +3,27 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
+//
+//  @TODO: Move this into its own script that exists on the tower prefab
+//
+//
+//  Idea is to use coroutines to increase the 't' value in the shader
+//
+//  Creation:
+//      1. Get a list of objects to fade in (@TODO: figure out where to cache this for easy ref, TowerPart?)
+//      2. Go through the list and set the material to the dissolve material
+//      3. Run coroutine to drive 't' from 0 -> 1
+//      4. Go through the list and set the material back to normal
+//
+//
+//  Deletion:
+//      1. Get that same list from step 1 of creation
+//      2. Go through the list and set the material to the dissolve material
+//      3. Run coroutine to drive 't' from 1 -> 0
+//      4. Go through the list and destroy the objects
+//
+
+
 [Serializable]
 public struct TowerPiece
 {
@@ -52,14 +73,13 @@ public class Tower : MonoBehaviour
         {
             level -= 1;
         }
-        StartCoroutine(DissolveTower());
+        StartCoroutine(DissolveTowerAndRebuild());
     }
 
     void Update()
     {
         upgradeTimer += Time.deltaTime;
     }
-
 
     void Start()
     {
@@ -145,6 +165,12 @@ public class Tower : MonoBehaviour
         {
             Destroy(obj);
         }
+    }
+
+    private IEnumerator DissolveTowerAndRebuild()
+    {
+        yield return StartCoroutine(DissolveTower());
+        BuildTower();
     }
 
     private IEnumerator Dissolve()
