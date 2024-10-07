@@ -42,9 +42,10 @@ GameObject:
   - component: {fileID: 7529458170984353002}
   - component: {fileID: 7529458170984353003}
   - component: {fileID: 7710638678091361656}
+  - component: {fileID: 7106528360331074770}
   m_Layer: 0
   m_Name: DefensiveTowerBasic
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,9 +82,10 @@ MonoBehaviour:
   baseHealth: 0
   baseArmor: 0
   upgradeLevel: 0
-  weapon: {fileID: 9069773475696277328, guid: 7bd65a138bcecc840b10e0e6aab24a71, type: 3}
+  weapon: {fileID: 0}
   buildSpot: {fileID: 7529458169839677064}
   dissolver: {fileID: 7710638678091361656}
+  targeting: {fileID: 0}
   pieces:
   - dpsIncrease: 0
     healthIncrease: 0
@@ -117,3 +119,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dissolveMaterial: {fileID: 2100000, guid: 32a649e000088cd4285c3e36b6dcaeeb, type: 2}
+--- !u!114 &7106528360331074770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7529458170984353004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad7fd514249d4a94cb0257c130fd1ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 10
+  enemyTag: Enemy
+  tower: {fileID: 7529458170984353002}
+  currentTarget: {fileID: 0}

@@ -13,6 +13,15 @@ public struct TowerPiece
     public List<TowerPart> layers;
 }
 
+
+//
+//
+//  @TODO: Have Tower and Enemy inherit from a GameUnit class that
+//         can be used for combat based stuff. It will hold DPS, HP, Armor, etc.
+//         This will be the class that we can use for a health bar and for combat
+//         and anything else that might be shared between the different units
+//
+
 public class Tower : MonoBehaviour
 {
     [Header("Attributes")]
@@ -29,7 +38,7 @@ public class Tower : MonoBehaviour
     [Header("Internals")]
     public Transform buildSpot;
     public Dissolver dissolver;
-
+    public Targeting targeting;
     public List<TowerPiece> pieces = new();
 
     public float upgradeDebounceTime = 0.5f;
@@ -71,6 +80,11 @@ public class Tower : MonoBehaviour
     void Update()
     {
         upgradeTimer += Time.deltaTime;
+        targeting.AcquireTarget();
+        if (targeting.HasTarget())
+        {
+            Attack(targeting.GetTarget());
+        }
     }
 
     void Start()
@@ -78,7 +92,13 @@ public class Tower : MonoBehaviour
         currentDPS = baseDPS;
         currentArmor = baseArmor;
         currentHealth = baseHealth;
+        targeting.enemyTag = "Enemy";
         StartCoroutine(BuildTower());
+    }
+
+    private void Attack(Transform obj)
+    {
+
     }
 
     private IEnumerator BuildTower()
