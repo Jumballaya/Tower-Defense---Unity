@@ -1,0 +1,137 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7529458169839677065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7529458169839677064}
+  m_Layer: 0
+  m_Name: BuildSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7529458169839677064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7529458169839677065}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7529458170984353002}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7529458170984353004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7529458170984353002}
+  - component: {fileID: 7529458170984353003}
+  - component: {fileID: 7710638678091361656}
+  - component: {fileID: 7106528360331074770}
+  m_Layer: 0
+  m_Name: DefensiveTowerBasicMagic
+  m_TagString: Tower
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7529458170984353002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7529458170984353004}
+  m_LocalRotation: {x: 0, y: 0.9396927, z: 0, w: 0.34202018}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7529458169839677064}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 140, z: 0}
+--- !u!114 &7529458170984353003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7529458170984353004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80aa0b95c3dfd0241ae4ff59ac08f94a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDPS: 0
+  baseHealth: 0
+  baseArmor: 0
+  upgradeLevel: 0
+  weapon: {fileID: 4540195764193602562, guid: 49e52ce67abc20d4999d9fba7efa2ba8, type: 3}
+  buildSpot: {fileID: 7529458169839677064}
+  dissolver: {fileID: 7710638678091361656}
+  targeting: {fileID: 0}
+  pieces:
+  - dpsIncrease: 0
+    healthIncrease: 0
+    armorIncrease: 0
+    layers:
+    - {fileID: 8842121486993309633, guid: 9929b86b23707014680594cd27eb37a6, type: 3}
+  - dpsIncrease: 0
+    healthIncrease: 0
+    armorIncrease: 0
+    layers:
+    - {fileID: 8842121486993309633, guid: 9929b86b23707014680594cd27eb37a6, type: 3}
+    - {fileID: 7015444097743276220, guid: 6dea07ab6eaa1c049a3889718ab5ae18, type: 3}
+  - dpsIncrease: 0
+    healthIncrease: 0
+    armorIncrease: 0
+    layers:
+    - {fileID: 8842121486993309633, guid: 9929b86b23707014680594cd27eb37a6, type: 3}
+    - {fileID: 7015444097743276220, guid: 6dea07ab6eaa1c049a3889718ab5ae18, type: 3}
+    - {fileID: 7015444097743276220, guid: 3d1f9f1e7cdb0014495b0dbba9229270, type: 3}
+  upgradeDebounceTime: 0.5
+--- !u!114 &7710638678091361656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7529458170984353004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec33cf62d010adc428e1507757ae0143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveMaterial: {fileID: 2100000, guid: 32a649e000088cd4285c3e36b6dcaeeb, type: 2}
+--- !u!114 &7106528360331074770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7529458170984353004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad7fd514249d4a94cb0257c130fd1ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 10
+  enemyTag: Enemy
+  tower: {fileID: 7529458170984353002}
+  currentTarget: {fileID: 0}

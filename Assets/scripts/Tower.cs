@@ -34,7 +34,7 @@ public class Tower : MonoBehaviour
     [Range(0, 3)]
     public int upgradeLevel;
     public GameObject weapon;
-    private GameObject weaponInstance;
+    private SiegeWeapon siegeWeapon;
     [Header("Internals")]
     public Transform buildSpot;
     public Dissolver dissolver;
@@ -115,10 +115,11 @@ public class Tower : MonoBehaviour
         }
         if (weapon)
         {
-            weaponInstance = Instantiate(weapon, buildSpot);
+            GameObject weaponInstance = Instantiate(weapon, buildSpot);
             weaponInstance.transform.position = spot.position;
             SiegeWeapon sw = weaponInstance.GetComponent<SiegeWeapon>();
-            objects.AddRange(sw.GetGameObjects());
+            siegeWeapon = sw;
+            objects.AddRange(siegeWeapon.GetGameObjects());
         }
 
         // Run the dissolve 
@@ -129,12 +130,10 @@ public class Tower : MonoBehaviour
     {
         // Get a list of items to delete
         List<GameObject> objectsToDelete = new();
-        if (weaponInstance)
+        if (siegeWeapon)
         {
             // @TODO: Have the weapon return all objects that have a mesh so they can be dissolved
-            objectsToDelete.Add(weaponInstance);
-            SiegeWeapon sw = weaponInstance.GetComponent<SiegeWeapon>();
-            objectsToDelete.AddRange(sw.GetGameObjects());
+            objectsToDelete.AddRange(siegeWeapon.GetGameObjects());
         }
         foreach (Transform child in buildSpot.transform)
         {
