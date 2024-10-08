@@ -81,11 +81,12 @@ MonoBehaviour:
   baseDPS: 0
   baseHealth: 0
   baseArmor: 0
+  attackRate: 0
   upgradeLevel: 0
   weapon: {fileID: 0}
   buildSpot: {fileID: 7529458169839677064}
   dissolver: {fileID: 7710638678091361656}
-  targeting: {fileID: 0}
+  targeting: {fileID: 7106528360331074770}
   pieces:
   - dpsIncrease: 0
     healthIncrease: 0
@@ -132,6 +133,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 10
-  enemyTag: Enemy
-  tower: {fileID: 7529458170984353002}
+  targetTag: Enemy
+  self: {fileID: 7529458170984353003}
   currentTarget: {fileID: 0}

@@ -968,6 +968,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7106528360331074770, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: targetTag
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7106528360331074770, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
       propertyPath: towerPosition
       value: 
       objectReference: {fileID: 743664753}
@@ -1196,6 +1200,7 @@ GameObject:
   - component: {fileID: 2146565156}
   - component: {fileID: 2146565155}
   - component: {fileID: 2146565154}
+  - component: {fileID: 2146565158}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -1282,3 +1287,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2146565158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146565153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 087f9186b27e758408ecd43583c8719b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDPS: 0
+  baseHealth: 0
+  baseArmor: 0
+  attackRate: 0

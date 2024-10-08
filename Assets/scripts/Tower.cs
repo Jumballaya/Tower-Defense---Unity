@@ -13,7 +13,6 @@ public struct TowerPiece
     public List<TowerPart> layers;
 }
 
-
 //
 //
 //  @TODO: Have Tower and Enemy inherit from a GameUnit class that
@@ -22,15 +21,9 @@ public struct TowerPiece
 //         and anything else that might be shared between the different units
 //
 
-public class Tower : MonoBehaviour
+public class Tower : CombatUnit
 {
-    [Header("Attributes")]
-    public float baseDPS;
-    private float currentDPS;
-    public float baseHealth;
-    private float currentHealth;
-    public float baseArmor;
-    private float currentArmor;
+    [Header("Tower Attributes")]
     [Range(0, 3)]
     public int upgradeLevel;
     public GameObject weapon;
@@ -79,6 +72,7 @@ public class Tower : MonoBehaviour
 
     void Update()
     {
+        UpdateUnit();
         upgradeTimer += Time.deltaTime;
         targeting.AcquireTarget();
         if (targeting.HasTarget())
@@ -89,16 +83,9 @@ public class Tower : MonoBehaviour
 
     void Start()
     {
-        currentDPS = baseDPS;
-        currentArmor = baseArmor;
-        currentHealth = baseHealth;
-        targeting.enemyTag = "Enemy";
+        Initialize();
+        targeting.targetTag = "Enemy";
         StartCoroutine(BuildTower());
-    }
-
-    private void Attack(Transform obj)
-    {
-
     }
 
     private IEnumerator BuildTower()

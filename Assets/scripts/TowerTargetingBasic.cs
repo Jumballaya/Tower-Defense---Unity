@@ -6,7 +6,7 @@ public class TowerTargetingBasic : Targeting
     {
         if (currentTarget)
         {
-            float dist = (currentTarget.position - tower.position).magnitude;
+            float dist = (currentTarget.transform.position - self.transform.position).magnitude;
             if (dist > range)
             {
                 currentTarget = null;
@@ -16,13 +16,13 @@ public class TowerTargetingBasic : Targeting
         {
             return;
         }
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(targetTag);
 
         GameObject closest = null;
         float closestDistance = Mathf.Infinity;
         foreach (GameObject enemy in enemies)
         {
-            float dist = (enemy.transform.position - tower.position).magnitude;
+            float dist = (enemy.transform.position - self.transform.position).magnitude;
             if (dist > range)
             {
                 continue;
@@ -35,7 +35,7 @@ public class TowerTargetingBasic : Targeting
         }
         if (closest != null)
         {
-            currentTarget = closest.transform;
+            currentTarget = closest.GetComponent<CombatUnit>();
         }
     }
 }
