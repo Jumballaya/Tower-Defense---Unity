@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
@@ -33,8 +32,11 @@ public class Dissolver : MonoBehaviour
         List<Material> originalMats = new();
         foreach (GameObject obj in objects)
         {
-            originalMats.Add(obj.GetComponent<Renderer>().material);
-            obj.GetComponent<Renderer>().material = dissolveMaterial;
+            if (obj.TryGetComponent(out Renderer rend))
+            {
+                originalMats.Add(rend.sharedMaterial);
+                rend.sharedMaterial = dissolveMaterial;
+            }
         }
 
         // Run the dissolve 
@@ -51,7 +53,10 @@ public class Dissolver : MonoBehaviour
         // Switch the material back
         for (int i = 0; i < originalMats.Count; i++)
         {
-            objects[i].GetComponent<Renderer>().material = originalMats[i];
+            if (objects[i].TryGetComponent(out Renderer rend))
+            {
+                rend.sharedMaterial = originalMats[i];
+            }
         }
     }
 }

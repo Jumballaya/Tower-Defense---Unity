@@ -117,8 +117,8 @@ public class Tower : MonoBehaviour
         {
             weaponInstance = Instantiate(weapon, buildSpot);
             weaponInstance.transform.position = spot.position;
-            objects.Add(weaponInstance);
-            objects.Add(weaponInstance.transform.GetChild(0).gameObject);
+            SiegeWeapon sw = weaponInstance.GetComponent<SiegeWeapon>();
+            objects.AddRange(sw.GetGameObjects());
         }
 
         // Run the dissolve 
@@ -131,8 +131,10 @@ public class Tower : MonoBehaviour
         List<GameObject> objectsToDelete = new();
         if (weaponInstance)
         {
+            // @TODO: Have the weapon return all objects that have a mesh so they can be dissolved
             objectsToDelete.Add(weaponInstance);
-            objectsToDelete.Add(weaponInstance.transform.GetChild(0).gameObject);
+            SiegeWeapon sw = weaponInstance.GetComponent<SiegeWeapon>();
+            objectsToDelete.AddRange(sw.GetGameObjects());
         }
         foreach (Transform child in buildSpot.transform)
         {
