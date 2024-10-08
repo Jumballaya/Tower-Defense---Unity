@@ -23,19 +23,40 @@ using UnityEngine;
 public class Dissolver : MonoBehaviour
 {
     public Material dissolveMaterial;
+    private readonly int shaderId = Shader.PropertyToID("_t");
 
-    // @TODO: Figure out how to get a different 't' for each object.
+    private MaterialPropertyBlock mpb;
+
+    public MaterialPropertyBlock Mpb
+    {
+        get
+        {
+            mpb ??= new MaterialPropertyBlock();
+            return mpb;
+        }
+    }
+
+    struct DissolveEntry
+    {
+        public Material material;
+        public Renderer renderer;
+    };
     public IEnumerator Dissolve(int start, int end, float duration, List<GameObject> objects)
     {
         // Set their material to the dissolve material
         // Save the original material
-        List<Material> originalMats = new();
+        List<DissolveEntry> entries = new();
         foreach (GameObject obj in objects)
         {
             if (obj.TryGetComponent(out Renderer rend))
             {
-                originalMats.Add(rend.sharedMaterial);
                 rend.sharedMaterial = dissolveMaterial;
+                rend.SetPropertyBlock(Mpb);
+                entries.Add(new DissolveEntry()
+                {
+                    material = rend.sharedMaterial,
+                    renderer = rend,
+                });
             }
         }
 
@@ -46,16 +67,21 @@ public class Dissolver : MonoBehaviour
         {
             elapse += Time.deltaTime;
             str = Mathf.Lerp(start, end, elapse / duration);
-            dissolveMaterial.SetFloat("_t", str);
+            Mpb.SetFloat("_t", str);
+            foreach (var entry in entries)
+            {
+                entry.renderer.SetPropertyBlock(Mpb);
+            }
+
             yield return null;
         }
 
         // Switch the material back
-        for (int i = 0; i < originalMats.Count; i++)
+        for (int i = 0; i < entries.Count; i++)
         {
             if (objects[i].TryGetComponent(out Renderer rend))
             {
-                rend.sharedMaterial = originalMats[i];
+                rend.sharedMaterial = entries[i].material;
             }
         }
     }

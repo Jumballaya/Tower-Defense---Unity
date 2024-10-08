@@ -103,13 +103,12 @@ public class Tower : MonoBehaviour
 
     private IEnumerator BuildTower()
     {
-        // Get a list of items to delete
         List<GameObject> objects = new();
         Transform spot = buildSpot;
         for (int i = 0; i < pieces[upgradeLevel].layers.Count; i++)
         {
             var child = Instantiate(pieces[upgradeLevel].layers[i], buildSpot);
-            child.transform.position += spot.transform.position;
+            child.transform.position = spot.transform.position;
             spot = child.buildSpot;
             objects.Add(child.gameObject);
         }
@@ -122,7 +121,6 @@ public class Tower : MonoBehaviour
             objects.AddRange(siegeWeapon.GetGameObjects());
         }
 
-        // Run the dissolve 
         yield return StartCoroutine(dissolver.Dissolve(1, 0, upgradeDebounceTime, objects));
     }
 
@@ -132,7 +130,6 @@ public class Tower : MonoBehaviour
         List<GameObject> objectsToDelete = new();
         if (siegeWeapon)
         {
-            // @TODO: Have the weapon return all objects that have a mesh so they can be dissolved
             objectsToDelete.AddRange(siegeWeapon.GetGameObjects());
         }
         foreach (Transform child in buildSpot.transform)
