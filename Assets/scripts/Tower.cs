@@ -13,7 +13,6 @@ public struct TowerPiece
     public List<TowerPart> layers;
 }
 
-[ExecuteAlways]
 public class Tower : CombatUnit
 {
     [Header("Tower Attributes")]
@@ -21,7 +20,8 @@ public class Tower : CombatUnit
     public int upgradeLevel;
     public GameObject weapon;
     private SiegeWeapon siegeWeapon;
-    [Header("Internals")]
+
+    [Header("Tower Internals")]
     public Transform buildSpot;
     public Dissolver dissolver;
     public Targeting targeting;
@@ -102,6 +102,7 @@ public class Tower : CombatUnit
             siegeWeapon = sw;
             objects.AddRange(siegeWeapon.GetGameObjects());
         }
+        MoveHealthBar(spot);
 
         yield return StartCoroutine(dissolver.Dissolve(1, 0, upgradeDebounceTime, objects));
     }
