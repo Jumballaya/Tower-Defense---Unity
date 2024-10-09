@@ -25,4 +25,9 @@ public class HealthBar : MonoBehaviour
     {
         transform.position = p;
     }
+
+    public void Scale(Vector3 s)
+    {
+        transform.localScale = s;
+    }
 }

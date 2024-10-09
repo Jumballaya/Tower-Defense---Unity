@@ -15,6 +15,7 @@ public class CombatUnit : MonoBehaviour
   [Header("Combat Internals")]
   public GameObject healthBarPrefab;
   public Vector3 healthBarOffset = new();
+  public Vector3 healthBarScale = new Vector3(1f, 1f, 1f);
   private GameObject healthBarInstance;
   private HealthBar healthBar;
 
@@ -27,6 +28,7 @@ public class CombatUnit : MonoBehaviour
     healthBar = healthBarInstance.GetComponent<HealthBar>();
     healthBar.SetPercent(1f);
     healthBar.MoveTo(transform.position + healthBarOffset);
+    healthBar.Scale(healthBarScale);
   }
 
   protected void UpdateUnit()
@@ -39,10 +41,10 @@ public class CombatUnit : MonoBehaviour
     healthBar.MoveTo(t.position + healthBarOffset);
   }
 
-  public void GetAttackedBy(CombatUnit unit)
+  public void GetAttackedBy(CombatUnit attacker)
   {
-    float mult = unit.currentDPS / currentArmor;
-    float damage = 1f / unit.attackRate * GetDPS() * mult;
+    float mult = attacker.currentDPS / currentArmor;
+    float damage = 1f / attacker.attackRate * attacker.GetDPS() * mult;
     TakeDamage(damage);
   }
 
@@ -51,14 +53,14 @@ public class CombatUnit : MonoBehaviour
     return currentDPS;
   }
 
-  protected void Attack(CombatUnit unit)
+  protected void Attack(CombatUnit target)
   {
     if (attackTimer < 1f / attackRate)
     {
       return;
     }
     attackTimer = 0f;
-    unit.GetAttackedBy(this);
+    target.GetAttackedBy(this);
   }
 
   protected float GetHealth()

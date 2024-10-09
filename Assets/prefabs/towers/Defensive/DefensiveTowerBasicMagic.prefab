@@ -731,12 +731,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80aa0b95c3dfd0241ae4ff59ac08f94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDPS: 6
-  baseHealth: 52
-  baseArmor: 10
+  baseDPS: 8
+  baseHealth: 104
+  baseArmor: 24
   attackRate: 0.5
   healthBarPrefab: {fileID: 0}
   healthBarOffset: {x: 0, y: 1, z: 0}
+  healthBarScale: {x: 1, y: 1, z: 1}
   upgradeLevel: 0
   weapon: {fileID: 4540195764193602562, guid: 49e52ce67abc20d4999d9fba7efa2ba8, type: 3}
   buildSpot: {fileID: 7529458169839677064}

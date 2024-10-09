@@ -144,12 +144,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3840b1abdc54604399924f6fac0fe9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDPS: 4
-  baseHealth: 24
-  baseArmor: 4
-  attackRate: 2
+  baseDPS: 2
+  baseHealth: 26
+  baseArmor: 12
+  attackRate: 1
   healthBarPrefab: {fileID: 2843649475018388428, guid: 304d39c318b0ab54ba6dde1e5aa7ee52, type: 3}
-  healthBarOffset: {x: 0, y: 0.845, z: 0.226}
+  healthBarOffset: {x: 0, y: 0.65, z: 0.05}
+  healthBarScale: {x: 0.35, y: 0.45, z: 0.45}
   targeting: {fileID: 2455123790750287015}
 --- !u!114 &2455123790750287015
 MonoBehaviour:

@@ -79,11 +79,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseDPS: 4
-  baseHealth: 48
+  baseHealth: 96
   baseArmor: 12
   attackRate: 2
   healthBarPrefab: {fileID: 2843649475018388428, guid: 304d39c318b0ab54ba6dde1e5aa7ee52, type: 3}
   healthBarOffset: {x: 0, y: 1, z: 0}
+  healthBarScale: {x: 1, y: 1, z: 1}
   upgradeLevel: 0
   weapon: {fileID: 0}
   buildSpot: {fileID: 7529458169839677064}
