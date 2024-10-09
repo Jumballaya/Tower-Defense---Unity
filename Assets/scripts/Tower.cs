@@ -26,6 +26,7 @@ public class Tower : CombatUnit
     public Dissolver dissolver;
     public Targeting targeting;
     public List<TowerPiece> pieces = new();
+    public GameObject towerWeapon;
 
     public float upgradeDebounceTime = 0.5f;
     private float upgradeTimer = 0f;
@@ -37,7 +38,12 @@ public class Tower : CombatUnit
         targeting.AcquireTarget();
         if (targeting.HasTarget())
         {
-            Attack(targeting.GetTarget());
+            CombatUnit currTarget = targeting.GetTarget();
+            AttackState state = Attack(currTarget);
+            if (state == AttackState.CanAttack)
+            {
+                ProjectileManager.FireProjectile(this, currTarget, towerWeapon, 10f);
+            }
         }
     }
 

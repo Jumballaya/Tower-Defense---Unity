@@ -1,5 +1,11 @@
 using UnityEngine;
 
+public enum AttackState
+{
+  Attacking, // in the middle of the swing timer
+  CanAttack, // swing timer done
+}
+
 public class CombatUnit : MonoBehaviour
 {
   [Header("Combat Attributes")]
@@ -53,14 +59,15 @@ public class CombatUnit : MonoBehaviour
     return currentDPS;
   }
 
-  protected void Attack(CombatUnit target)
+  protected AttackState Attack(CombatUnit target)
   {
     if (attackTimer < 1f / attackRate)
     {
-      return;
+      return AttackState.Attacking;
     }
     attackTimer = 0f;
     target.GetAttackedBy(this);
+    return AttackState.CanAttack;
   }
 
   protected float GetHealth()
