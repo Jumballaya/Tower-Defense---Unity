@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TowerTargetingBasic : Targeting
+public class TargetingBasic : Targeting
 {
     public override void AcquireTarget()
     {

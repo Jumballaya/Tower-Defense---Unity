@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 7106528360331074770}
   m_Layer: 0
   m_Name: DefensiveTowerBasicMagic
-  m_TagString: Tower
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,4 +135,4 @@ MonoBehaviour:
   range: 10
   targetTag: Enemy
   self: {fileID: 7529458170984353003}
-  currentTarget: {fileID: 7529458170984353003}
+  currentTarget: {fileID: 0}
