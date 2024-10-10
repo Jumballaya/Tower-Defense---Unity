@@ -18,7 +18,7 @@ public class Tower : CombatUnit
     [Header("Tower Attributes")]
     [Range(0, 3)]
     public int upgradeLevel;
-    public GameObject weapon;
+    public GameObject siegeWeaponPrefab;
     private SiegeWeapon siegeWeapon;
 
     [Header("Tower Internals")]
@@ -26,24 +26,31 @@ public class Tower : CombatUnit
     public Dissolver dissolver;
     public Targeting targeting;
     public List<TowerPiece> pieces = new();
-    public GameObject towerWeapon;
+    public GameObject towerWeapon; // arrows, cannon balls, etc. just not the siege weapon on top
 
     public float upgradeDebounceTime = 0.5f;
     private float upgradeTimer = 0f;
+
+    private Transform attackSpot;
 
     void Update()
     {
         UpdateUnit();
         upgradeTimer += Time.deltaTime;
         targeting.AcquireTarget();
-        if (targeting.HasTarget())
+        if (IsUpgrading)
         {
-            CombatUnit currTarget = targeting.GetTarget();
-            AttackState state = Attack(currTarget);
-            if (state == AttackState.CanAttack)
-            {
-                ProjectileManager.FireProjectile(this, currTarget, towerWeapon, 10f);
-            }
+            return;
+        }
+        if (!targeting.HasTarget())
+        {
+            return;
+        }
+        CombatUnit currTarget = targeting.GetTarget();
+        AttackState state = Attack(currTarget);
+        if (state == AttackState.CanAttack)
+        {
+            projectileManager.FireProjectile(attackSpot, currTarget, towerWeapon, 10f);
         }
     }
 
@@ -51,42 +58,28 @@ public class Tower : CombatUnit
     {
         Initialize();
         targeting.targetTag = "Enemy";
+        attackSpot = buildSpot;
         StartCoroutine(BuildTower());
     }
 
     void OnEnable() => TowerManager.AddTower(this);
     void OnDisable() => TowerManager.RemoveTower(this);
 
-    public void IncLevel()
+    public void Upgrade()
     {
-        if (upgradeTimer < (upgradeDebounceTime * 2f))
+        if (IsUpgrading)
         {
             return;
         }
-        upgradeLevel += 1;
-        if (upgradeLevel > pieces.Count - 1)
+        if (CanUpgrade)
         {
-            upgradeLevel = pieces.Count - 1;
-            return;
+            upgradeLevel += 1;
+            TowerPiece piece = pieces[upgradeLevel];
+            baseDPS += piece.dpsIncrease;
+            baseArmor += piece.armorIncrease;
+            baseHealth += piece.healthIncrease;
+            StartCoroutine(DissolveTowerAndRebuild());
         }
-        StartCoroutine(DissolveTowerAndRebuild());
-    }
-
-    public void DecLevel()
-    {
-        if (upgradeTimer < (upgradeDebounceTime * 2f))
-        {
-            return;
-        }
-        if (upgradeLevel == 0)
-        {
-            return;
-        }
-        else
-        {
-            upgradeLevel -= 1;
-        }
-        StartCoroutine(DissolveTowerAndRebuild());
     }
 
     private IEnumerator BuildTower()
@@ -100,15 +93,16 @@ public class Tower : CombatUnit
             spot = child.buildSpot;
             objects.Add(child.gameObject);
         }
-        if (weapon)
+        if (siegeWeaponPrefab)
         {
-            GameObject weaponInstance = Instantiate(weapon, buildSpot);
+            GameObject weaponInstance = Instantiate(siegeWeaponPrefab, buildSpot);
             weaponInstance.transform.position = spot.position;
             SiegeWeapon sw = weaponInstance.GetComponent<SiegeWeapon>();
             siegeWeapon = sw;
             objects.AddRange(siegeWeapon.GetGameObjects());
         }
         MoveHealthBar(spot);
+        attackSpot = spot;
 
         yield return StartCoroutine(dissolver.Dissolve(1, 0, upgradeDebounceTime, objects));
     }
@@ -143,4 +137,19 @@ public class Tower : CombatUnit
         yield return StartCoroutine(BuildTower());
     }
 
+    private bool IsUpgrading
+    {
+        get
+        {
+            return upgradeTimer < (upgradeDebounceTime * 2f);
+        }
+    }
+
+    private bool CanUpgrade
+    {
+        get
+        {
+            return upgradeLevel < pieces.Count - 1;
+        }
+    }
 }

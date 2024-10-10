@@ -25,6 +25,9 @@ public class CombatUnit : MonoBehaviour
   private GameObject healthBarInstance;
   private HealthBar healthBar;
 
+  protected ProjectileManager projectileManager;
+
+
   protected void Initialize()
   {
     currentDPS = baseDPS;
@@ -35,6 +38,7 @@ public class CombatUnit : MonoBehaviour
     healthBar.SetPercent(1f);
     healthBar.MoveTo(transform.position + healthBarOffset);
     healthBar.Scale(healthBarScale);
+    projectileManager = ProjectileManager.GetInstance();
   }
 
   protected void UpdateUnit()
