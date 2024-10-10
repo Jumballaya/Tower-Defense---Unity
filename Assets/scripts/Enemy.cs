@@ -7,6 +7,7 @@ public class Enemy : CombatUnit
   public ProjectileType projectileType;
   [Header("Internals")]
   public Targeting targeting;
+  public Transform attackSpot;
 
   void Update()
   {
@@ -19,17 +20,12 @@ public class Enemy : CombatUnit
     }
 
     targeting.AcquireTarget();
-
     if (!targeting.HasTarget())
     {
       return;
     }
     CombatUnit currTarget = targeting.GetTarget();
-    AttackState state = GetAttackState();
-    if (currTarget != null && state == AttackState.CanAttack)
-    {
-      StartCoroutine(AttackTarget(currTarget));
-    }
+    InitiateAttack(currTarget, attackSpot, projectileType);
   }
 
 
@@ -42,14 +38,7 @@ public class Enemy : CombatUnit
   void OnDisable() => EnemyManager.RemoveEnemy(this);
 
 
-  private IEnumerator AttackTarget(CombatUnit currTarget)
-  {
-    StartAttacking();
-    yield return projectileManager.FireProjectile(transform, currTarget, projectileType, 10f);
-    DoDamage(currTarget);
-  }
-
-  IEnumerator Die()
+  protected override IEnumerator Die()
   {
     Destroy(gameObject);
     yield return null;

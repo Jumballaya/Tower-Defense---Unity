@@ -31,18 +31,17 @@ public class ProjectileManager : MonoBehaviour
         public GameObject boulderPrefab;
         public GameObject cannonBallPrefab;
         public GameObject bulletPrefab;
-
     };
 
     public ProjectilePrefabMap prefabMap;
-    private List<GameObject> projectilesInFlight = new();
+    private List<GameObject> projectileList = new();
 
 
     // @TODO: Create a pool of each projectile and pull from the pool instead of creating/deleting a new projectile each time
     public IEnumerator FireProjectile(Transform origin, CombatUnit target, ProjectileType projectile, float speed)
     {
         GameObject proj = InstantiateProjectile(projectile, origin);
-        projectilesInFlight.Add(proj);
+        projectileList.Add(proj);
         while (true)
         {
             if (target == null) break;
@@ -56,7 +55,7 @@ public class ProjectileManager : MonoBehaviour
 
             yield return null;
         }
-        projectilesInFlight.Remove(proj);
+        projectileList.Remove(proj);
         Destroy(proj);
     }
 
@@ -101,7 +100,7 @@ public class ProjectileManager : MonoBehaviour
 #if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
-        foreach (GameObject p in projectilesInFlight)
+        foreach (GameObject p in projectileList)
         {
             DrawCurveTo(p.transform);
         }

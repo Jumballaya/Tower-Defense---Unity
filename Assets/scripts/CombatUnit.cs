@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum AttackState
@@ -53,6 +54,22 @@ public class CombatUnit : MonoBehaviour
   public float GetDPS()
   {
     return currentDPS;
+  }
+
+  protected void InitiateAttack(CombatUnit target, Transform origin, ProjectileType type)
+  {
+    AttackState state = GetAttackState();
+    if (target != null && state == AttackState.CanAttack)
+    {
+      StartCoroutine(AttackTarget(target, origin, type));
+    }
+  }
+
+  private IEnumerator AttackTarget(CombatUnit currTarget, Transform origin, ProjectileType type)
+  {
+    StartAttacking();
+    yield return projectileManager.FireProjectile(origin, currTarget, type, 10f);
+    DoDamage(currTarget);
   }
 
   protected AttackState GetAttackState()
@@ -115,5 +132,11 @@ public class CombatUnit : MonoBehaviour
   {
     currentHealth -= damage;
     healthBar.SetPercent(currentHealth / baseHealth);
+  }
+
+  protected virtual IEnumerator Die()
+  {
+    Destroy(gameObject);
+    yield return null;
   }
 }

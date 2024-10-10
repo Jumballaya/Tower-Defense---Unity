@@ -6,8 +6,8 @@ using UnityEngine;
 //
 //
 //  @TODO: Eventually replace all of the combat inside here to a combat manager
-//
-//
+//  @TODO: Think about moving the dissolve functionality to another class
+//  @TODO: Think about moving the upgrade functionality to another class
 //
 //
 
@@ -28,14 +28,13 @@ public class Tower : CombatUnit
     public int upgradeLevel;
     public GameObject siegeWeaponPrefab;
     private SiegeWeapon siegeWeapon;
+    public ProjectileType towerWeapon; // arrows, cannon balls, etc. just not the siege weapon on top
 
     [Header("Tower Internals")]
     public Transform buildSpot;
     public Dissolver dissolver;
     public Targeting targeting;
     public List<TowerPiece> pieces = new();
-    public ProjectileType towerWeapon; // arrows, cannon balls, etc. just not the siege weapon on top
-
     public float upgradeDebounceTime = 0.5f;
     private float upgradeTimer = 0f;
 
@@ -45,21 +44,17 @@ public class Tower : CombatUnit
     {
         UpdateUnit();
         upgradeTimer += Time.deltaTime;
-        targeting.AcquireTarget();
         if (IsUpgrading)
         {
             return;
         }
+        targeting.AcquireTarget();
         if (!targeting.HasTarget())
         {
             return;
         }
         CombatUnit currTarget = targeting.GetTarget();
-        AttackState state = GetAttackState();
-        if (currTarget != null && state == AttackState.CanAttack)
-        {
-            StartCoroutine(AttackTarget(currTarget));
-        }
+        InitiateAttack(currTarget, attackSpot, towerWeapon);
     }
 
     void Start()
@@ -73,23 +68,7 @@ public class Tower : CombatUnit
     void OnEnable() => TowerManager.AddTower(this);
     void OnDisable() => TowerManager.RemoveTower(this);
 
-    public void Upgrade()
-    {
-        if (IsUpgrading)
-        {
-            return;
-        }
-        if (CanUpgrade)
-        {
-            upgradeLevel += 1;
-            TowerPiece piece = pieces[upgradeLevel];
-            baseDPS += piece.dpsIncrease;
-            baseArmor += piece.armorIncrease;
-            baseHealth += piece.healthIncrease;
-            StartCoroutine(DissolveTowerAndRebuild());
-        }
-    }
-
+    // BUILDING/ASSEMBLY LOGIC (dissolve)
     private IEnumerator BuildTower()
     {
         List<GameObject> objects = new();
@@ -145,11 +124,23 @@ public class Tower : CombatUnit
         yield return StartCoroutine(BuildTower());
     }
 
-    private IEnumerator AttackTarget(CombatUnit currTarget)
+
+    // UPGRADE LOGIC (upgrade)
+    public void Upgrade()
     {
-        StartAttacking();
-        yield return projectileManager.FireProjectile(attackSpot, currTarget, towerWeapon, 10f);
-        DoDamage(currTarget);
+        if (IsUpgrading)
+        {
+            return;
+        }
+        if (CanUpgrade)
+        {
+            upgradeLevel += 1;
+            TowerPiece piece = pieces[upgradeLevel];
+            baseDPS += piece.dpsIncrease;
+            baseArmor += piece.armorIncrease;
+            baseHealth += piece.healthIncrease;
+            StartCoroutine(DissolveTowerAndRebuild());
+        }
     }
 
     private bool IsUpgrading
@@ -166,5 +157,12 @@ public class Tower : CombatUnit
         {
             return upgradeLevel < pieces.Count - 1;
         }
+    }
+
+    // From CombatUnit
+    protected override IEnumerator Die()
+    {
+        Destroy(gameObject);
+        yield return null;
     }
 }
