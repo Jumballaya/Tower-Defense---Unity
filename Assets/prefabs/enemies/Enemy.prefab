@@ -129,6 +129,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 377957478392773226}
+  - {fileID: 8133204797471212769}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -151,7 +152,9 @@ MonoBehaviour:
   healthBarPrefab: {fileID: 2843649475018388428, guid: 304d39c318b0ab54ba6dde1e5aa7ee52, type: 3}
   healthBarOffset: {x: 0, y: 0.65, z: 0.05}
   healthBarScale: {x: 0.35, y: 0.45, z: 0.45}
+  projectileType: 0
   targeting: {fileID: 2455123790750287015}
+  attackSpot: {fileID: 8133204797471212769}
 --- !u!114 &2455123790750287015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,3 +171,34 @@ MonoBehaviour:
   targetTag: Player
   self: {fileID: 2455123790750287014}
   currentTarget: {fileID: 0}
+--- !u!1 &5139686376262818723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8133204797471212769}
+  m_Layer: 0
+  m_Name: AttackSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8133204797471212769
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5139686376262818723}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.293, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2455123790750287008}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
