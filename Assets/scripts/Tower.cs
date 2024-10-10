@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
+//
+//
+//  @TODO: Eventually replace all of the combat inside here to a combat manager
+//
+//
+//
+//
+
 
 [Serializable]
 public struct TowerPiece
@@ -26,7 +34,7 @@ public class Tower : CombatUnit
     public Dissolver dissolver;
     public Targeting targeting;
     public List<TowerPiece> pieces = new();
-    public GameObject towerWeapon; // arrows, cannon balls, etc. just not the siege weapon on top
+    public ProjectileType towerWeapon; // arrows, cannon balls, etc. just not the siege weapon on top
 
     public float upgradeDebounceTime = 0.5f;
     private float upgradeTimer = 0f;
@@ -47,10 +55,10 @@ public class Tower : CombatUnit
             return;
         }
         CombatUnit currTarget = targeting.GetTarget();
-        AttackState state = Attack(currTarget);
-        if (state == AttackState.CanAttack)
+        AttackState state = GetAttackState();
+        if (currTarget != null && state == AttackState.CanAttack)
         {
-            projectileManager.FireProjectile(attackSpot, currTarget, towerWeapon, 10f);
+            StartCoroutine(AttackTarget(currTarget));
         }
     }
 
@@ -135,6 +143,13 @@ public class Tower : CombatUnit
         upgradeTimer = 0f;
         yield return StartCoroutine(DissolveTower());
         yield return StartCoroutine(BuildTower());
+    }
+
+    private IEnumerator AttackTarget(CombatUnit currTarget)
+    {
+        StartAttacking();
+        yield return projectileManager.FireProjectile(attackSpot, currTarget, towerWeapon, 10f);
+        DoDamage(currTarget);
     }
 
     private bool IsUpgrading

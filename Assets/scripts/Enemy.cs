@@ -1,9 +1,10 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
 
 public class Enemy : CombatUnit
 {
+  [Header("Enemy Attributes")]
+  public ProjectileType projectileType;
   [Header("Internals")]
   public Targeting targeting;
 
@@ -18,11 +19,19 @@ public class Enemy : CombatUnit
     }
 
     targeting.AcquireTarget();
-    if (targeting.HasTarget())
+
+    if (!targeting.HasTarget())
     {
-      Attack(targeting.GetTarget());
+      return;
+    }
+    CombatUnit currTarget = targeting.GetTarget();
+    AttackState state = GetAttackState();
+    if (currTarget != null && state == AttackState.CanAttack)
+    {
+      StartCoroutine(AttackTarget(currTarget));
     }
   }
+
 
   void Start()
   {
@@ -32,6 +41,13 @@ public class Enemy : CombatUnit
   void OnEnable() => EnemyManager.AddEnemy(this);
   void OnDisable() => EnemyManager.RemoveEnemy(this);
 
+
+  private IEnumerator AttackTarget(CombatUnit currTarget)
+  {
+    StartAttacking();
+    yield return projectileManager.FireProjectile(transform, currTarget, projectileType, 10f);
+    DoDamage(currTarget);
+  }
 
   IEnumerator Die()
   {

@@ -50,28 +50,45 @@ public class CombatUnit : MonoBehaviour
   {
     healthBar.MoveTo(t.position + healthBarOffset);
   }
+  public float GetDPS()
+  {
+    return currentDPS;
+  }
 
-  public void GetAttackedBy(CombatUnit attacker)
+  protected AttackState GetAttackState()
+  {
+    if (attackTimer < 1f / attackRate)
+    {
+      return AttackState.Attacking;
+    }
+    return AttackState.CanAttack;
+  }
+
+  protected void GetAttackedBy(CombatUnit attacker)
   {
     float mult = attacker.currentDPS / currentArmor;
     float damage = 1f / attacker.attackRate * attacker.GetDPS() * mult;
     TakeDamage(damage);
   }
 
-  public float GetDPS()
+
+  protected void StartAttacking()
   {
-    return currentDPS;
+    AttackState state = GetAttackState();
+    if (state == AttackState.CanAttack)
+    {
+      attackTimer = 0f;
+    }
   }
 
-  protected AttackState Attack(CombatUnit target)
+  protected void DoDamage(CombatUnit target)
   {
-    if (attackTimer < 1f / attackRate)
+    if (GetAttackState() != AttackState.Attacking)
     {
-      return AttackState.Attacking;
+      return;
     }
-    attackTimer = 0f;
     target.GetAttackedBy(this);
-    return AttackState.CanAttack;
+    return;
   }
 
   protected float GetHealth()

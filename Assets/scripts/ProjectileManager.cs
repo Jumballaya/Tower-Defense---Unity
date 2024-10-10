@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,55 +16,48 @@ public enum ProjectileType
     Bullet
 };
 
-struct Projectile
-{
-    public Transform origin;
-    public CombatUnit target;
-    public GameObject projectile;
-    public float speed;
-}
-
-
 public class ProjectileManager : MonoBehaviour
 {
+    // Singleton Instance
     private static ProjectileManager instance;
-    public static ProjectileManager GetInstance()
+    public static ProjectileManager GetInstance() => instance;
+
+
+    [Serializable]
+    public struct ProjectilePrefabMap
     {
-        return instance;
-    }
+        public GameObject arrowPrefab;
+        public GameObject boltPrefab;
+        public GameObject boulderPrefab;
+        public GameObject cannonBallPrefab;
+        public GameObject bulletPrefab;
 
-    private List<Projectile> projectilesInFlight = new();
+    };
 
-    // @TODO: Turn this into an IEnumerator
-    //
-    //  The reasoning is that we might want to fire a projectile as a part of a series of actions.
-    //  It could go like so:
-    //      1. Fire Projectile, wait for it to hit
-    //      2. Do damage
-    //      3. Some sort of effect (like an explosion)
-    //      4. Start a kill unit effect
-    //      5. Destroy the unit
-    //
-    //  That could look like:
-    //
-    //      ...
-    //      yield return projectileManager.FireProjectile(...);
-    //      from.DoDamageTo(to);
-    //      yield return from.DieEffect();
-    //      from.Die();
-    //      ...
-    //
-    //
-    // @TODO: Use the enum above to create the projectile prefab instead of passing it in.
+    public ProjectilePrefabMap prefabMap;
+    private List<GameObject> projectilesInFlight = new();
+
+
     // @TODO: Create a pool of each projectile and pull from the pool instead of creating/deleting a new projectile each time
-    public void FireProjectile(Transform origin, CombatUnit target, GameObject projectile, float speed)
+    public IEnumerator FireProjectile(Transform origin, CombatUnit target, ProjectileType projectile, float speed)
     {
-        projectilesInFlight.Add(new Projectile()
+        GameObject proj = InstantiateProjectile(projectile, origin);
+        projectilesInFlight.Add(proj);
+        while (true)
         {
-            target = target,
-            projectile = Instantiate(projectile, origin),
-            speed = speed
-        });
+            if (target == null) break;
+
+            Vector3 dir = target.transform.position - proj.transform.position;
+            float distThisFrame = speed * Time.deltaTime;
+            if (dir.magnitude <= distThisFrame) break; // Hit
+
+            proj.transform.Translate(dir.normalized * distThisFrame, Space.World);
+            proj.transform.LookAt(target.transform);
+
+            yield return null;
+        }
+        projectilesInFlight.Remove(proj);
+        Destroy(proj);
     }
 
     void Awake()
@@ -74,45 +69,41 @@ public class ProjectileManager : MonoBehaviour
         instance = this;
     }
 
-    void Update()
+
+    private GameObject InstantiateProjectile(ProjectileType type, Transform origin)
     {
-        List<Projectile> toDelete = new();
-        foreach (Projectile p in projectilesInFlight)
+        switch (type)
         {
-            if (p.target == null)
-            {
-                toDelete.Add(p);
-                Destroy(p.projectile);
-                continue;
-            }
-
-            Vector3 dir = p.target.transform.position - p.projectile.transform.position;
-            float distThisFrame = p.speed * Time.deltaTime;
-            if (dir.magnitude <= distThisFrame)
-            {
-                // Hit Target
-                Destroy(p.projectile);
-                toDelete.Add(p);
-                continue;
-            }
-            p.projectile.transform.Translate(dir.normalized * distThisFrame, Space.World);
-            p.projectile.transform.LookAt(p.target.transform);
+            case ProjectileType.Arrow:
+                {
+                    return Instantiate(prefabMap.arrowPrefab, origin);
+                }
+            case ProjectileType.Bolt:
+                {
+                    return Instantiate(prefabMap.boltPrefab, origin);
+                }
+            case ProjectileType.Boulder:
+                {
+                    return Instantiate(prefabMap.boulderPrefab, origin);
+                }
+            case ProjectileType.Bullet:
+                {
+                    return Instantiate(prefabMap.bulletPrefab, origin);
+                }
+            case ProjectileType.CannonBall:
+                {
+                    return Instantiate(prefabMap.cannonBallPrefab, origin);
+                }
         }
-        foreach (Projectile p in toDelete)
-        {
-            projectilesInFlight.Remove(p);
-        }
+        return null;
     }
-
-
-
 
 #if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
-        foreach (Projectile p in projectilesInFlight)
+        foreach (GameObject p in projectilesInFlight)
         {
-            DrawCurveTo(p.projectile.transform);
+            DrawCurveTo(p.transform);
         }
     }
 
