@@ -51,10 +51,6 @@ public class CombatUnit : MonoBehaviour
   {
     healthBar.MoveTo(t.position + healthBarOffset);
   }
-  public float GetDPS()
-  {
-    return currentDPS;
-  }
 
   protected void InitiateAttack(CombatUnit target, Transform origin, ProjectileType type)
   {
@@ -108,24 +104,34 @@ public class CombatUnit : MonoBehaviour
     return;
   }
 
-  protected float GetHealth()
+  public float GetHealth()
   {
     return currentHealth;
   }
 
-  protected void AdjustHealth(float amount)
+  public void AdjustHealth(float amount)
   {
     baseHealth += amount;
   }
 
-  protected float GetArmor()
+  public float GetArmor()
   {
     return currentArmor;
   }
 
-  protected void AdjustArmor(float amount)
+  public void AdjustArmor(float amount)
   {
     baseArmor += amount;
+  }
+
+  public float GetDPS()
+  {
+    return currentDPS;
+  }
+
+  public void AdjustDPS(float amount)
+  {
+    baseDPS += amount;
   }
 
   private void TakeDamage(float damage)

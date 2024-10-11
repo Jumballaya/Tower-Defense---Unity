@@ -7,25 +7,17 @@ using UnityEngine;
 //
 //  @TODO: Eventually replace all of the combat inside here to a combat manager
 //  @TODO: Think about moving the dissolve functionality to another class
-//  @TODO: Think about moving the upgrade functionality to another class
 //
 //
-
-
-[Serializable]
-public struct TowerPiece
-{
-    public float dpsIncrease;
-    public float healthIncrease;
-    public float armorIncrease;
-    public List<TowerPart> layers;
-}
-
 public class Tower : CombatUnit
 {
+    [Serializable]
+    public struct TowerPiece
+    {
+        public List<TowerPart> parts;
+    }
+
     [Header("Tower Attributes")]
-    [Range(0, 3)]
-    public int upgradeLevel;
     public GameObject siegeWeaponPrefab;
     private SiegeWeapon siegeWeapon;
     public ProjectileType towerWeapon; // arrows, cannon balls, etc. just not the siege weapon on top
@@ -34,17 +26,17 @@ public class Tower : CombatUnit
     public Transform buildSpot;
     public Dissolver dissolver;
     public Targeting targeting;
+
+    public UnitUpgrader upgrader;
     public List<TowerPiece> pieces = new();
-    public float upgradeDebounceTime = 0.5f;
-    private float upgradeTimer = 0f;
 
     private Transform attackSpot;
 
     void Update()
     {
         UpdateUnit();
-        upgradeTimer += Time.deltaTime;
-        if (IsUpgrading)
+        upgrader.UpdateTimer();
+        if (upgrader.IsUpgrading)
         {
             return;
         }
@@ -68,14 +60,24 @@ public class Tower : CombatUnit
     void OnEnable() => TowerManager.AddTower(this);
     void OnDisable() => TowerManager.RemoveTower(this);
 
+    public void Upgrade()
+    {
+        bool upgraded = upgrader.Upgrade(this);
+        if (upgraded)
+        {
+            StartCoroutine(DissolveTowerAndRebuild());
+        }
+    }
+
     // BUILDING/ASSEMBLY LOGIC (dissolve)
     private IEnumerator BuildTower()
     {
         List<GameObject> objects = new();
         Transform spot = buildSpot;
-        for (int i = 0; i < pieces[upgradeLevel].layers.Count; i++)
+        int upgradeLevel = upgrader.GetUpgradeLevel();
+        for (int i = 0; i < pieces[upgradeLevel].parts.Count; i++)
         {
-            var child = Instantiate(pieces[upgradeLevel].layers[i], buildSpot);
+            var child = Instantiate(pieces[upgradeLevel].parts[i], buildSpot);
             child.transform.position = spot.transform.position;
             spot = child.buildSpot;
             objects.Add(child.gameObject);
@@ -91,7 +93,7 @@ public class Tower : CombatUnit
         MoveHealthBar(spot);
         attackSpot = spot;
 
-        yield return StartCoroutine(dissolver.Dissolve(1, 0, upgradeDebounceTime, objects));
+        yield return StartCoroutine(dissolver.Dissolve(1, 0, 1f, objects));
     }
 
     private IEnumerator DissolveTower()
@@ -108,7 +110,7 @@ public class Tower : CombatUnit
         }
 
         // Run the dissolve 
-        yield return StartCoroutine(dissolver.Dissolve(0, 1, upgradeDebounceTime, objectsToDelete));
+        yield return StartCoroutine(dissolver.Dissolve(0, 1, 1f, objectsToDelete));
 
         // Delete the items
         foreach (GameObject obj in objectsToDelete)
@@ -119,44 +121,9 @@ public class Tower : CombatUnit
 
     private IEnumerator DissolveTowerAndRebuild()
     {
-        upgradeTimer = 0f;
+        upgrader.ResetTimer();
         yield return StartCoroutine(DissolveTower());
         yield return StartCoroutine(BuildTower());
-    }
-
-
-    // UPGRADE LOGIC (upgrade)
-    public void Upgrade()
-    {
-        if (IsUpgrading)
-        {
-            return;
-        }
-        if (CanUpgrade)
-        {
-            upgradeLevel += 1;
-            TowerPiece piece = pieces[upgradeLevel];
-            baseDPS += piece.dpsIncrease;
-            baseArmor += piece.armorIncrease;
-            baseHealth += piece.healthIncrease;
-            StartCoroutine(DissolveTowerAndRebuild());
-        }
-    }
-
-    private bool IsUpgrading
-    {
-        get
-        {
-            return upgradeTimer < (upgradeDebounceTime * 2f);
-        }
-    }
-
-    private bool CanUpgrade
-    {
-        get
-        {
-            return upgradeLevel < pieces.Count - 1;
-        }
     }
 
     // From CombatUnit

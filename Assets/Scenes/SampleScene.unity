@@ -166,7 +166,7 @@ Transform:
   m_Children:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &113143633
 GameObject:
@@ -311,7 +311,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7529458170984353002, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7529458170984353002, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -357,6 +357,10 @@ PrefabInstance:
       propertyPath: baseDPS
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 7529458170984353003, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+      propertyPath: towerWeapon
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7529458170984353004, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
       propertyPath: m_Name
       value: DefensiveTowerBasic
@@ -376,7 +380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2455123790750287008, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.52
+      value: -2.6829998
       objectReference: {fileID: 0}
     - target: {fileID: 2455123790750287008, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_LocalPosition.y
@@ -417,6 +421,10 @@ PrefabInstance:
     - target: {fileID: 2455123790750287009, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2455123790750287014, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
+      propertyPath: projectileType
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
@@ -464,7 +472,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &520721424
 GameObject:
@@ -560,7 +568,7 @@ RectTransform:
   m_Children:
   - {fileID: 113143634}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -580,7 +588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2455123790750287008, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.617
+      value: -1.78
       objectReference: {fileID: 0}
     - target: {fileID: 2455123790750287008, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_LocalPosition.y
@@ -622,6 +630,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2455123790750287014, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
+      propertyPath: projectileType
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
 --- !u!1001 &816797450
@@ -637,7 +649,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2455123790750287008, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.827
+      value: -2.99
       objectReference: {fileID: 0}
     - target: {fileID: 2455123790750287008, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_LocalPosition.y
@@ -678,6 +690,10 @@ PrefabInstance:
     - target: {fileID: 2455123790750287009, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_Name
       value: Enemy (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2455123790750287014, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
+      propertyPath: projectileType
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
@@ -812,7 +828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2455123790750287008, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.218
+      value: -2.3809998
       objectReference: {fileID: 0}
     - target: {fileID: 2455123790750287008, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_LocalPosition.y
@@ -853,6 +869,10 @@ PrefabInstance:
     - target: {fileID: 2455123790750287009, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
       propertyPath: m_Name
       value: Enemy (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2455123790750287014, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
+      propertyPath: projectileType
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d47bfb79b8091d4994529bc485b5dbe, type: 3}
@@ -1001,7 +1021,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1902082596
 GameObject:
@@ -1096,7 +1116,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 34.795, y: -16.918, z: -9.847}
 --- !u!114 &1902082599
 MonoBehaviour:
@@ -1139,7 +1159,7 @@ PrefabInstance:
     - target: {fileID: 5522391166138748952, guid: 4b50b1b218e78204596915a09004e6c2, type: 3}
       propertyPath: prefabMap.boltPrefab
       value: 
-      objectReference: {fileID: 6929307204573514825, guid: 8f79f687c23f39f40991fa6ce25bf795, type: 3}
+      objectReference: {fileID: 2241941286094041395, guid: 2a5d0c074a0c8114cbcfa34f0c8ad212, type: 3}
     - target: {fileID: 5522391166138748952, guid: 4b50b1b218e78204596915a09004e6c2, type: 3}
       propertyPath: prefabMap.arrowPrefab
       value: 
@@ -1147,15 +1167,15 @@ PrefabInstance:
     - target: {fileID: 5522391166138748952, guid: 4b50b1b218e78204596915a09004e6c2, type: 3}
       propertyPath: prefabMap.bulletPrefab
       value: 
-      objectReference: {fileID: 6929307204573514825, guid: 8f79f687c23f39f40991fa6ce25bf795, type: 3}
+      objectReference: {fileID: 6938835869976257054, guid: f7d74413ca0eff740b324814e4d66b5f, type: 3}
     - target: {fileID: 5522391166138748952, guid: 4b50b1b218e78204596915a09004e6c2, type: 3}
       propertyPath: prefabMap.boulderPrefab
       value: 
-      objectReference: {fileID: 6929307204573514825, guid: 8f79f687c23f39f40991fa6ce25bf795, type: 3}
+      objectReference: {fileID: 2721159157425628970, guid: 4c1264a0fd7a1dc40abf93a269af27a1, type: 3}
     - target: {fileID: 5522391166138748952, guid: 4b50b1b218e78204596915a09004e6c2, type: 3}
       propertyPath: prefabMap.cannonBallPrefab
       value: 
-      objectReference: {fileID: 6929307204573514825, guid: 8f79f687c23f39f40991fa6ce25bf795, type: 3}
+      objectReference: {fileID: 7979867511955480873, guid: bc1d1cc08785a8d4e8f52580cca2a0a8, type: 3}
     - target: {fileID: 5522391166138748953, guid: 4b50b1b218e78204596915a09004e6c2, type: 3}
       propertyPath: m_Name
       value: Projectile Manager
