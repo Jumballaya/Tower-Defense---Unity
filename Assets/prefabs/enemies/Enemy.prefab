@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3840b1abdc54604399924f6fac0fe9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDPS: 200
+  baseDPS: 4
   baseHealth: 26
   baseArmor: 12
   attackRate: 1
