@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using Unity.VisualScripting;
 
 //
 //
@@ -126,6 +125,7 @@ public class Tower : CombatUnit
     // From CombatUnit
     protected override IEnumerator Die()
     {
+        yield return DissolveTower();
         Destroy(gameObject);
         yield return null;
     }

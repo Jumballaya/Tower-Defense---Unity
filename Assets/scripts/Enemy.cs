@@ -11,13 +11,6 @@ public class Enemy : CombatUnit
   void Update()
   {
     UpdateUnit();
-
-    if (GetHealth() <= 0f)
-    {
-      StartCoroutine(Die());
-      return;
-    }
-
     targeting.AcquireTarget();
     if (!targeting.HasTarget())
     {

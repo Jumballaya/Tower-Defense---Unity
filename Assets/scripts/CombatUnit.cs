@@ -46,6 +46,11 @@ public class CombatUnit : MonoBehaviour
   protected void UpdateUnit()
   {
     attackTimer += Time.deltaTime;
+    if (GetHealth() <= 0f)
+    {
+      StartCoroutine(Die());
+      return;
+    }
   }
 
   protected void MoveHealthBar(Transform t)
