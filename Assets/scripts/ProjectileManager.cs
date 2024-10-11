@@ -38,23 +38,23 @@ public class ProjectileManager : MonoBehaviour
 
 
     // @TODO: Create a pool of each projectile and pull from the pool instead of creating/deleting a new projectile each time
-    public IEnumerator FireProjectile(Transform origin, CombatUnit target, ProjectileType projectile, float speed)
+    public IEnumerator FireProjectile(Transform origin, Transform target, ProjectileType projectile, float speed)
     {
         GameObject proj = InstantiateProjectile(projectile, origin);
         projectileList.Add(proj);
         while (true)
         {
             if (target == null) break;
-
-            Vector3 dir = target.transform.position - proj.transform.position;
+            Vector3 dir = target.position - proj.transform.position;
             float distThisFrame = speed * Time.deltaTime;
             if (dir.magnitude <= distThisFrame) break; // Hit
 
             proj.transform.Translate(dir.normalized * distThisFrame, Space.World);
-            proj.transform.LookAt(target.transform);
+            proj.transform.LookAt(target);
 
             yield return null;
         }
+
         projectileList.Remove(proj);
         Destroy(proj);
     }

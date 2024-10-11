@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using Unity.VisualScripting;
 
 //
 //
-//  @TODO: Eventually replace all of the combat inside here to a combat manager
 //  @TODO: Think about moving the dissolve functionality to another class
 //
 //
@@ -30,8 +30,6 @@ public class Tower : CombatUnit
     public UnitUpgrader upgrader;
     public List<TowerPiece> pieces = new();
 
-    private Transform attackSpot;
-
     void Update()
     {
         UpdateUnit();
@@ -46,14 +44,13 @@ public class Tower : CombatUnit
             return;
         }
         CombatUnit currTarget = targeting.GetTarget();
-        InitiateAttack(currTarget, attackSpot, towerWeapon);
+        InitiateAttack(currTarget, towerWeapon);
     }
 
     void Start()
     {
         Initialize();
         targeting.targetTag = "Enemy";
-        attackSpot = buildSpot;
         StartCoroutine(BuildTower());
     }
 
@@ -91,7 +88,7 @@ public class Tower : CombatUnit
             objects.AddRange(siegeWeapon.GetGameObjects());
         }
         MoveHealthBar(spot);
-        attackSpot = spot;
+        attackSpot.position = spot.position;
 
         yield return StartCoroutine(dissolver.Dissolve(1, 0, 1f, objects));
     }

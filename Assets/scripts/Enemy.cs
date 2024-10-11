@@ -7,7 +7,6 @@ public class Enemy : CombatUnit
   public ProjectileType projectileType;
   [Header("Internals")]
   public Targeting targeting;
-  public Transform attackSpot;
 
   void Update()
   {
@@ -25,7 +24,7 @@ public class Enemy : CombatUnit
       return;
     }
     CombatUnit currTarget = targeting.GetTarget();
-    InitiateAttack(currTarget, attackSpot, projectileType);
+    InitiateAttack(currTarget, projectileType);
   }
 
 

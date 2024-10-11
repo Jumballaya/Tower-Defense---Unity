@@ -20,6 +20,7 @@ public class CombatUnit : MonoBehaviour
   private float attackTimer = 0f;
 
   [Header("Combat Internals")]
+  public Transform attackSpot;
   public GameObject healthBarPrefab;
   public Vector3 healthBarOffset = new();
   public Vector3 healthBarScale = new Vector3(1f, 1f, 1f);
@@ -52,19 +53,19 @@ public class CombatUnit : MonoBehaviour
     healthBar.MoveTo(t.position + healthBarOffset);
   }
 
-  protected void InitiateAttack(CombatUnit target, Transform origin, ProjectileType type)
+  protected void InitiateAttack(CombatUnit target, ProjectileType type)
   {
     AttackState state = GetAttackState();
     if (target != null && state == AttackState.CanAttack)
     {
-      StartCoroutine(AttackTarget(target, origin, type));
+      StartCoroutine(AttackTarget(target, type));
     }
   }
 
-  private IEnumerator AttackTarget(CombatUnit currTarget, Transform origin, ProjectileType type)
+  private IEnumerator AttackTarget(CombatUnit currTarget, ProjectileType type)
   {
     StartAttacking();
-    yield return projectileManager.FireProjectile(origin, currTarget, type, 10f);
+    yield return projectileManager.FireProjectile(attackSpot, currTarget.attackSpot, type, 10f);
     DoDamage(currTarget);
   }
 
@@ -109,9 +110,10 @@ public class CombatUnit : MonoBehaviour
     return currentHealth;
   }
 
-  public void AdjustHealth(float amount)
+  public void UpgradeHealth(float amount)
   {
     baseHealth += amount;
+    currentHealth += amount;
   }
 
   public float GetArmor()
@@ -119,9 +121,10 @@ public class CombatUnit : MonoBehaviour
     return currentArmor;
   }
 
-  public void AdjustArmor(float amount)
+  public void UpgradeArmor(float amount)
   {
     baseArmor += amount;
+    currentArmor += amount;
   }
 
   public float GetDPS()
@@ -129,9 +132,10 @@ public class CombatUnit : MonoBehaviour
     return currentDPS;
   }
 
-  public void AdjustDPS(float amount)
+  public void UpgradeDPS(float amount)
   {
     baseDPS += amount;
+    currentDPS += amount;
   }
 
   private void TakeDamage(float damage)

@@ -42,9 +42,9 @@ public class UnitUpgrader : MonoBehaviour
         {
             upgradeLevel += 1;
             UnitUpgrade upgrade = upgrades[upgradeLevel];
-            unit.AdjustDPS(upgrade.dps);
-            unit.AdjustArmor(upgrade.armor);
-            unit.AdjustHealth(upgrade.health);
+            unit.UpgradeDPS(upgrade.dps);
+            unit.UpgradeArmor(upgrade.armor);
+            unit.UpgradeHealth(upgrade.health);
             return true;
         }
         return false;
