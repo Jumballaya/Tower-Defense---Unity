@@ -22,6 +22,8 @@ public class Node : MonoBehaviour
 
     private Vector3 position;
     private Quaternion rotation;
+    private NodeManager nodeManager;
+    private BuildManager buildManager;
 
 
     void Start()
@@ -31,11 +33,26 @@ public class Node : MonoBehaviour
         transform.SetPositionAndRotation(position, rotation);
     }
 
+    void Awake()
+    {
+        nodeManager = NodeManager.GetInstance();
+        buildManager = BuildManager.GetInstance();
+    }
+
+    void OnEnable() => NodeManager.GetInstance().AddNode(this);
+    void OnDisable() => NodeManager.GetInstance().RemoveNode(this);
+
     void OnValidate()
     {
         position.Set(transform.position.x, elevation * 0.2f, transform.position.z);
         rotation = Quaternion.Euler(0f, GetOrientationDegrees(), 0f);
         transform.SetPositionAndRotation(position, rotation);
+    }
+
+    void OnMouseDown()
+    {
+        if (!canBuildHere) return;
+        buildManager.ShowMenu(transform);
     }
 
     private float GetOrientationDegrees()
