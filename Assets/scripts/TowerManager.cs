@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Rendering;
-
 
 
 #if UNITY_EDITOR
@@ -10,16 +9,41 @@ using UnityEditor;
 
 public class TowerManager : MonoBehaviour
 {
-    static List<Tower> towers = new();
+    [Serializable]
+    public struct TowerPrefabMap
+    {
+        public GameObject basicTower;
+        public GameObject basicMagicTower;
+    };
+    public TowerPrefabMap prefabMap;
 
-    public static void AddTower(Tower t)
+    private static TowerManager instance;
+    public static TowerManager GetInstance() => instance;
+    void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.Log("More than one Tower Manager in the scene");
+        }
+        instance = this;
+    }
+
+    private List<Tower> towers = new();
+
+    public void AddTower(Tower t)
     {
         towers.Add(t);
     }
 
-    public static void RemoveTower(Tower t)
+    public void RemoveTower(Tower t)
     {
         towers.Remove(t);
+    }
+
+    public GameObject CreateTower(Transform parent)
+    {
+        Destroy(parent.GetChild(0).gameObject);
+        return Instantiate(prefabMap.basicTower, parent);
     }
 
 #if UNITY_EDITOR

@@ -40,6 +40,11 @@ class BuildManager : MonoBehaviour
   public void UpgradeUnit()
   {
     HideMenu();
+    Node selected = NodeManager.GetInstance().GetSelected();
+    if (selected.canBuildHere)
+    {
+      selected.BuildOrUpgrade();
+    }
   }
 
   public void BuySeigeWeapon()

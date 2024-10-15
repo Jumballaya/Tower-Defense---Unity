@@ -43,6 +43,11 @@ public class NodeManager : MonoBehaviour
     selectedNode = null;
   }
 
+  public Node GetSelected()
+  {
+    return selectedNode;
+  }
+
 
 
 #if UNITY_EDITOR

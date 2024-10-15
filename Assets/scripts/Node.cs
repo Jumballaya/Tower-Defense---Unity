@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Rendering.Universal;
 using UnityEngine;
 
 [Serializable]
@@ -25,16 +26,14 @@ public class Node : MonoBehaviour
     private NodeManager nodeManager;
     private BuildManager buildManager;
 
+    private Tower tower = null;
+
 
     void Start()
     {
         position = new Vector3(transform.position.x, elevation * 0.2f, transform.position.z);
         rotation = Quaternion.Euler(0f, 0f, GetOrientationDegrees());
         transform.SetPositionAndRotation(position, rotation);
-    }
-
-    void Awake()
-    {
         nodeManager = NodeManager.GetInstance();
         buildManager = BuildManager.GetInstance();
     }
@@ -53,6 +52,17 @@ public class Node : MonoBehaviour
     {
         if (!canBuildHere) return;
         buildManager.ShowMenu(transform);
+        nodeManager.SelectNode(this);
+    }
+
+    public void BuildOrUpgrade()
+    {
+        if (tower == null)
+        {
+            Build();
+            return;
+        }
+        Upgrade();
     }
 
     private float GetOrientationDegrees()
@@ -77,5 +87,16 @@ public class Node : MonoBehaviour
                 }
         }
         return 0f;
+    }
+
+    private void Build()
+    {
+        GameObject towerObj = TowerManager.GetInstance().CreateTower(buildSpot);
+        tower = towerObj.GetComponent<Tower>();
+    }
+
+    private void Upgrade()
+    {
+        tower.Upgrade();
     }
 }

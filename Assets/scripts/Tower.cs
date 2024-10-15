@@ -53,8 +53,8 @@ public class Tower : CombatUnit
         StartCoroutine(BuildTower());
     }
 
-    void OnEnable() => TowerManager.AddTower(this);
-    void OnDisable() => TowerManager.RemoveTower(this);
+    void OnEnable() => TowerManager.GetInstance().AddTower(this);
+    void OnDisable() => TowerManager.GetInstance().RemoveTower(this);
 
     public void Upgrade()
     {

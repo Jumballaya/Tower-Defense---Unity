@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f89b5c40bfd6ce3428b39f5af1687a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefabMap:
+    basicTower: {fileID: 7529458170984353004, guid: b6a925ba4b7578c46adbc5f495723a2b, type: 3}
+    basicMagicTower: {fileID: 7529458170984353004, guid: 5541c0d545b2b644eb44380c082a6bc2, type: 3}
