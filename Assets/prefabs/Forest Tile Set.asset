@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e65a10482f07b1941bdfc1c4c34198dd, type: 3}
+  m_Name: Forest Tile Set
+  m_EditorClassIdentifier: 
+  TileMaterial: {fileID: 2100000, guid: d14dc7d205d69f34899d9a17877e4dc0, type: 2}
+  BlankPrimary: {fileID: -4855243574250553854, guid: 3c2e03783dcfdc945abd8968574de7a4, type: 3}
+  BlankSecondary: {fileID: 4164624499741299792, guid: d3ff86a8e273acd449760dc42ebff3f8, type: 3}
+  RoadStraight: {fileID: 1403969690596524265, guid: cd1d36a6134a5f14c96f887f16468559, type: 3}
+  RoadBump: {fileID: -8603930918978254004, guid: 83e867b295cd08641a2b2ad04fc88729, type: 3}
+  RoadCornerRounded: {fileID: -8234109544647423627, guid: bdce0783b744d674886a1a8e7b1248d0, type: 3}
+  RoadCornerSquare: {fileID: 3290900866270390058, guid: 6e6730e094d427a4fbca1dc5658a747f, type: 3}
+  RoadCrossing: {fileID: 4973605269832398075, guid: 9d19baaec20ed1e459d993f1e5644c43, type: 3}
+  RoadSplit: {fileID: 8523727156845310870, guid: 9cde47e124744cc4897e25e1beac3e14, type: 3}
+  RoadRamp: {fileID: -9019496544722255400, guid: 03998063fa4061c41945313fb77f685a, type: 3}
+  RoadBridge: {fileID: -5656927910083103439, guid: ac92dc696251d4f4fa0a2f68fdf18527, type: 3}
+  RoadEndRound: {fileID: 211560256575091707, guid: b6b4e6c5ccdb64843b442ca10efa4064, type: 3}
+  RoadEndSquare: {fileID: 1317973022485942217, guid: 5a2a0af0548a3a14e8bc89020496e38f, type: 3}
+  SpawnerEndRoad: {fileID: 1685989396584724862, guid: 18452a63e8a39874ba3bcb9e38ac2d1b, type: 3}
+  SpawnerEndSquare: {fileID: -8219792198135971782, guid: 7900189ab56aa5a4591cc629219e682a, type: 3}
+  SpawnerRoadRound: {fileID: 5305095346621871317, guid: a5d9696d0a1d6ab489ed7952255ef953, type: 3}
+  SpawnerRoadSquare: {fileID: 921141965265942323, guid: 288f478da36cb7646b75ac81e236ef9e, type: 3}
+  TreesOne: {fileID: 70948346857766800, guid: cb799711d5e208f48a8959d9a9cd0c9f, type: 3}
+  TreesTwo: {fileID: 7667312670216434400, guid: 133fa5173713dd84787f286804c30ae1, type: 3}
+  TreesMany: {fileID: -6032365043310741612, guid: 06f24d53710bc9f40b3e7359820fc8cf, type: 3}
