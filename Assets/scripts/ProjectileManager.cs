@@ -25,7 +25,7 @@ public class ProjectileManager : MonoBehaviour
     public ProjectileManagerConfig config;
     public Projectile prefab;
     private ObjectPool projectilePool;
-    private List<PoolableObject> projectileList;
+    private List<PoolableObject> projectileList = new();
 
     void Start()
     {
@@ -36,6 +36,7 @@ public class ProjectileManager : MonoBehaviour
     public IEnumerator FireProjectile(Transform origin, Transform target, ProjectileType projectile, float speed)
     {
         var proj = projectilePool.GetObject(config.GetConfig(projectile));
+        proj.transform.SetPositionAndRotation(origin.position, origin.rotation);
         projectileList.Add(proj);
         while (true)
         {

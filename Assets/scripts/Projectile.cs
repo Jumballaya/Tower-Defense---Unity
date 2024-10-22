@@ -5,19 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class Projectile : PoolableObject
 {
-  private ProjectileConfig config;
-
-  public void Start()
-  {
-    if (Config.GetType() == typeof(ProjectileConfig))
-    {
-      config.SetupProjectile(this);
-    }
-  }
+  private ProjectileConfig config = null;
 
   public void OnEnable()
   {
-    if (Config.GetType() == typeof(ProjectileConfig))
+    if (Config?.GetType() == typeof(ProjectileConfig))
     {
       config.SetupProjectile(this);
     }
