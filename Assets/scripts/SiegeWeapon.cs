@@ -11,13 +11,28 @@ using UnityEngine;
 
 public class SiegeWeapon : MonoBehaviour
 {
+    [Header("Configuration")]
+    public SiegeWeaponConfig config;
+
     [Header("Attributes")]
-    public float dps;
+    public float dps = 10f;
+    public ProjectileType projectileType = ProjectileType.Bolt;
 
     [Header("Internals")]
     public List<GameObject> parts;
-    public Transform weaponBase;
-    public Transform weaponAttachment;
+    public GameObject weaponBase;
+    public GameObject weaponAttachment;
+
+    public void Start()
+    {
+        config.SetupSiegeWeapon(this);
+
+    }
+
+    public void OnEnable()
+    {
+        config.SetupSiegeWeapon(this);
+    }
 
     public List<GameObject> GetGameObjects()
     {

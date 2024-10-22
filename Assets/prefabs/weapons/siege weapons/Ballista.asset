@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eb39503d9d7b9440ac7785835bdd5b5, type: 3}
+  m_Name: Ballista
+  m_EditorClassIdentifier: 
+  dps: 10
+  projectileType: 1
+  weaponBase: {fileID: 6930119675369322345, guid: 29975d75aa455644ab21c755fcfff666, type: 3}
+  weaponAttachment: {fileID: 3196078496785300606, guid: c7feceba6158b0e4799e47a0f2f00c65, type: 3}
