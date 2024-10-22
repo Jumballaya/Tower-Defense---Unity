@@ -22,25 +22,20 @@ public class ProjectileManager : MonoBehaviour
     private static ProjectileManager instance;
     public static ProjectileManager GetInstance() => instance;
 
+    public ProjectileManagerConfig config;
+    public Projectile prefab;
+    private ObjectPool projectilePool;
+    private List<PoolableObject> projectileList;
 
-    [Serializable]
-    public struct ProjectilePrefabMap
+    void Start()
     {
-        public GameObject arrowPrefab;
-        public GameObject boltPrefab;
-        public GameObject boulderPrefab;
-        public GameObject cannonBallPrefab;
-        public GameObject bulletPrefab;
-    };
+        projectilePool = ObjectPool.CreateInstance(prefab, 50, transform);
+        projectilePool.spawnOption = ObjectPoolSpawnOption.CreateNew;
+    }
 
-    public ProjectilePrefabMap prefabMap;
-    private List<GameObject> projectileList = new();
-
-
-    // @TODO: Create a pool of each projectile and pull from the pool instead of creating/deleting a new projectile each time
     public IEnumerator FireProjectile(Transform origin, Transform target, ProjectileType projectile, float speed)
     {
-        GameObject proj = InstantiateProjectile(projectile, origin);
+        var proj = projectilePool.GetObject(config.GetConfig(projectile));
         projectileList.Add(proj);
         while (true)
         {
@@ -54,9 +49,8 @@ public class ProjectileManager : MonoBehaviour
 
             yield return null;
         }
-
         projectileList.Remove(proj);
-        Destroy(proj);
+        proj.gameObject.SetActive(false);
     }
 
     void Awake()
@@ -69,38 +63,10 @@ public class ProjectileManager : MonoBehaviour
     }
 
 
-    private GameObject InstantiateProjectile(ProjectileType type, Transform origin)
-    {
-        switch (type)
-        {
-            case ProjectileType.Arrow:
-                {
-                    return Instantiate(prefabMap.arrowPrefab, origin);
-                }
-            case ProjectileType.Bolt:
-                {
-                    return Instantiate(prefabMap.boltPrefab, origin);
-                }
-            case ProjectileType.Boulder:
-                {
-                    return Instantiate(prefabMap.boulderPrefab, origin);
-                }
-            case ProjectileType.Bullet:
-                {
-                    return Instantiate(prefabMap.bulletPrefab, origin);
-                }
-            case ProjectileType.CannonBall:
-                {
-                    return Instantiate(prefabMap.cannonBallPrefab, origin);
-                }
-        }
-        return null;
-    }
-
 #if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
-        foreach (GameObject p in projectileList)
+        foreach (PoolableObject p in projectileList)
         {
             DrawCurveTo(p.transform);
         }

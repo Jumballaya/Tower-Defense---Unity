@@ -42,14 +42,18 @@ public class ObjectPool
     public void FreeObject(PoolableObject obj)
     {
         availableObjects.Add(obj);
-        obj.gameObject.SetActive(false);
+        obj.transform.position = parent.transform.position;
     }
 
-    public PoolableObject? GetObject()
+    public PoolableObject GetObject(ScriptableObject config)
     {
         if (availableObjects.Count > 0)
         {
             PoolableObject obj = availableObjects[0];
+            if (config != null)
+            {
+                obj.Config = config;
+            }
             availableObjects.RemoveAt(0);
             obj.gameObject.SetActive(true);
             return obj;
@@ -57,25 +61,10 @@ public class ObjectPool
         if (spawnOption == ObjectPoolSpawnOption.CreateNew)
         {
             PoolableObject newObj = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity, parent);
-            newObj.parent = this;
-            return newObj;
-        }
-        return null;
-    }
-
-    public PoolableObject? SpawnObject(Transform t = null)
-    {
-        if (availableObjects.Count > 0)
-        {
-            PoolableObject obj = availableObjects[0];
-            obj.transform.SetPositionAndRotation(t.position, t.rotation);
-            availableObjects.RemoveAt(0);
-            obj.gameObject.SetActive(true);
-            return obj;
-        }
-        if (spawnOption == ObjectPoolSpawnOption.CreateNew)
-        {
-            PoolableObject newObj = GameObject.Instantiate(prefab, t.position, t.rotation, parent);
+            if (config != null)
+            {
+                newObj.Config = config;
+            }
             newObj.parent = this;
             return newObj;
         }
