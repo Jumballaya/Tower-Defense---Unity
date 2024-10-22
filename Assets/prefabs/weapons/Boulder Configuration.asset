@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2541c2ee917cd594bb2297b2a6862180, type: 3}
-  m_Name: Arrow Configuration
+  m_Name: Boulder Configuration
   m_EditorClassIdentifier: 
-  type: 0
-  mesh: {fileID: -6034248578777377988, guid: 5dbdbb48229f78c4db88736b90d9c1be, type: 3}
+  type: 2
+  mesh: {fileID: -3015983283608702723, guid: 9b0b8e9a8603fae4cba6d7128004793d, type: 3}
   material: {fileID: -6538903991835684241, guid: ac92dc696251d4f4fa0a2f68fdf18527, type: 3}
