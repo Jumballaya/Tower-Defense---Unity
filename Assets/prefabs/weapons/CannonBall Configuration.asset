@@ -15,3 +15,4 @@ MonoBehaviour:
   type: 3
   mesh: {fileID: -2383952699438097375, guid: acbed23d4748e544a91041a8668a7ed0, type: 3}
   material: {fileID: -6538903991835684241, guid: ac92dc696251d4f4fa0a2f68fdf18527, type: 3}
+  scale: {x: 1, y: 1, z: 1}
